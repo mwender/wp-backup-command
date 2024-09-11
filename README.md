@@ -16,6 +16,18 @@ To back up a theme:
 
 `wp theme backup <theme-slug>`
 
+## Changelog
+
+_1.1.0_
+
+- Backup respective plugin/theme from the parent directory.
+- Return to the original directory after execution.
+- Move the backup file to the original directory.
+
+_1.0.0_
+
+- Initial release.
+
 ## License
 
 This package is licensed under the MIT license.
