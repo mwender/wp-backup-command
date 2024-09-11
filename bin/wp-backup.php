@@ -39,6 +39,9 @@ class WP_Backup_Command {
    * Backup the specified plugin or theme.
    */
   private function backup_item( $slug, $type ) {
+    // Get the current working directory
+    $original_dir = getcwd();
+
     $path = ( $type === 'plugin' ) ? WP_PLUGIN_DIR . "/$slug" : get_theme_root() . "/$slug";
     $parent_dir = ( $type === 'plugin' ) ? WP_PLUGIN_DIR : get_theme_root();
 
@@ -56,13 +59,22 @@ class WP_Backup_Command {
     // Check if zip is installed
     if ( $this->is_command_available( 'zip' ) ) {
       WP_CLI::log( 'Creating zip backup...' );
-      $this->create_zip( $slug, $parent_dir, $backup_filename );
+      $backup_file = $this->create_zip( $slug, $parent_dir, $backup_filename );
     } elseif ( $this->is_command_available( 'tar' ) ) {
       WP_CLI::log( 'Creating tar.gz backup...' );
-      $this->create_tar_gz( $slug, $parent_dir, $backup_filename );
+      $backup_file = $this->create_tar_gz( $slug, $parent_dir, $backup_filename );
     } else {
       WP_CLI::error( 'Neither zip nor tar is available on the server.' );
     }
+
+    // Move the backup file to the original directory
+    if ( file_exists( "$parent_dir/$backup_file" ) ) {
+      rename( "$parent_dir/$backup_file", "$original_dir/$backup_file" );
+      WP_CLI::log( "Backup moved to: $original_dir/$backup_file" );
+    }
+
+    // Return to the original directory
+    chdir( $original_dir );
 
     WP_CLI::success( ucfirst( $type ) . " '$slug' backed up successfully." );
   }
@@ -86,6 +98,7 @@ class WP_Backup_Command {
     shell_exec( $command );
 
     WP_CLI::log( "Backup created: $zipfile" );
+    return $zipfile;
   }
 
   /**
@@ -99,6 +112,7 @@ class WP_Backup_Command {
     shell_exec( $command );
 
     WP_CLI::log( "Backup created: $tarfile" );
+    return $tarfile;
   }
 }
 
