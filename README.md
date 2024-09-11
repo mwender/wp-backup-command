@@ -18,6 +18,10 @@ To back up a theme:
 
 ## Changelog
 
+_1.1.1_
+
+- Updating composer.json `version` to force recognition of new release.
+
 _1.1.0_
 
 - Backup respective plugin/theme from the parent directory.
