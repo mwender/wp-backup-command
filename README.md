@@ -1,3 +1,5 @@
+![WP Backup Command](https://raw.githubusercontent.com/mwender/wp-backup-command/main/bin/thumbnail.png)
+
 # WP Backup Command
 
 This WP-CLI package allows you to back up plugins or themes by creating a zip or tar.gz archive.
