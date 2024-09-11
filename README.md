@@ -20,6 +20,10 @@ To back up a theme:
 
 ## Changelog
 
+_1.1.2_
+
+- Adding repository thumbnail.
+
 _1.1.1_
 
 - Updating composer.json `version` to force recognition of new release.
